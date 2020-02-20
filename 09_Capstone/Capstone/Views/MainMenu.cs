@@ -21,7 +21,7 @@ namespace Capstone.Views
             //this.countryDAO = countryDAO;
         }
 
-        protected override void SetMenuOptions()
+        protected override void SetMenuOptions() 
         {
             this.menuOptions.Add("1", "Add 2 integers");
             this.menuOptions.Add("2", "Menu option 2");
@@ -37,6 +37,7 @@ namespace Capstone.Views
         /// <returns></returns>
         protected override bool ExecuteSelection(string choice)
         {
+            
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
@@ -66,7 +67,7 @@ namespace Capstone.Views
         private void PrintHeader()
         {
             SetColor(ConsoleColor.Yellow);
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("My Program"));
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("Campsite Reservation"));
             ResetColor();
         }
     }

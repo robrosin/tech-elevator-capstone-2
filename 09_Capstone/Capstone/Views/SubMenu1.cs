@@ -22,10 +22,10 @@ namespace Capstone.Views
 
         protected override void SetMenuOptions()
         {
-            this.menuOptions.Add("1", "Option 1");
-            this.menuOptions.Add("2", "Do Option 2 and return to Main");
-            this.menuOptions.Add("B", "Back to Main Menu");
-            this.quitKey = "B";
+            this.menuOptions.Add("1", "View Campgrounds");
+            this.menuOptions.Add("2", "Search For Reservations");
+            this.menuOptions.Add("3", "Return to Parks Interface");
+            this.quitKey = "3";
         }
 
         /// <summary>
@@ -53,6 +53,7 @@ namespace Capstone.Views
         protected override void BeforeDisplayMenu()
         {
             PrintHeader();
+            
         }
 
         protected override void AfterDisplayMenu()
