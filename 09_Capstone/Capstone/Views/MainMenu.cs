@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Capstone.DAL;
+using Capstone.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Capstone.Views
@@ -8,6 +10,10 @@ namespace Capstone.Views
     /// </summary>
     public class MainMenu : CLIMenu
     {
+        ParkSqlDAO parkObj = new ParkSqlDAO();
+        CampgroundSqlDAO campObj = new CampgroundSqlDAO();
+        SiteSqlDAO siteObj = new SiteSqlDAO();
+        ReservationSqlDAO reserveObj = new ReservationSqlDAO();
         // DAOs - Interfaces to our data objects can be stored here...
         //protected ICityDAO cityDAO;
         //protected ICountryDAO countryDAO;
@@ -19,13 +25,19 @@ namespace Capstone.Views
         {
             //this.cityDAO = cityDAO;
             //this.countryDAO = countryDAO;
+            
         }
 
         protected override void SetMenuOptions() 
         {
-            this.menuOptions.Add("1", "Add 2 integers");
-            this.menuOptions.Add("2", "Menu option 2");
-            this.menuOptions.Add("3", "Go to a sub-menu");
+            IList<Park> parkList = parkObj.GetAllParks();
+            int i = 1;
+            
+            foreach (Park park in parkList)
+            {
+                menuOptions.Add(i.ToString(), park.Name);
+                i++;
+            }
             this.menuOptions.Add("Q", "Quit program");
         }
 
@@ -37,30 +49,18 @@ namespace Capstone.Views
         /// <returns></returns>
         protected override bool ExecuteSelection(string choice)
         {
-            
-            switch (choice)
-            {
-                case "1": // Do whatever option 1 is
-                    int i1 = GetInteger("Enter the first integer: ");
-                    int i2 = GetInteger("Enter the second integer: ");
-                    Console.WriteLine($"{i1} + {i2} = {i1+i2}");
-                    Pause("Press enter to continue");
-                    return true;    // Keep running the main menu
-                case "2": // Do whatever option 2 is
-                    WriteError("Not yet implemented");
-                    Pause("");
-                    return true;    // Keep running the main menu
-                case "3": // Create and show the sub-menu
-                    SubMenu1 sm = new SubMenu1();
-                    sm.Run();
-                    return true;    // Keep running the main menu
-            }
+            IList<Park> parkList = parkObj.GetAllParks();
+            int selection = int.Parse(choice);
+            Park park = parkList[selection - 1];
+            ParkMenu pMenu = new ParkMenu(park);
+            pMenu.Run();
             return true;
         }
 
         protected override void BeforeDisplayMenu()
         {
             PrintHeader();
+            Console.WriteLine("Select a Park For Further Details");
         }
 
 

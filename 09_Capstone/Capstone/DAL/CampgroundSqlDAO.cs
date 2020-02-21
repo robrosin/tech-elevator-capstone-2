@@ -10,7 +10,7 @@ namespace Capstone.DAL
     {
         private const string CONNECTION_STRING = "Server=.\\SQLExpress;Database=npcampground;Trusted_Connection=True;";
 
-        public IList<Campground> GetAllCampgrounds()
+        public IList<Campground> GetAllCampgrounds(int parkId)
         {
             List<Campground> camps = new List<Campground>();
             try
@@ -19,7 +19,8 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM campground", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE park_id = @parkId", conn);
+                    cmd.Parameters.AddWithValue("@parkId", parkId);
 
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())

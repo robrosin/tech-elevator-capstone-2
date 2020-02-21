@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Capstone.Views;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,7 +11,7 @@ namespace Capstone.DAL
     {
         private const string CONNECTION_STRING = "Server=.\\SQLExpress;Database=npcampground;Trusted_Connection=True;";
 
-        public IList<Site> GetTopFiveSites()
+        public IList<Site> GetSites(int campId, DateTime startDate, DateTime endDate)
         {
             List<Site> sites = new List<Site>();
             try
@@ -19,7 +20,20 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT TOP 5 * FROM site", conn);
+                    string sql = @"
+SELECT TOP 5 *
+FROM site
+WHERE campground_id = @campId AND site_id NOT IN
+(SELECT site_Id 
+FROM reservation
+WHERE ((@startDate > from_date) AND (@startDate <= to_date))
+OR ((@endDate > from_date) AND (@endDate <= to_date))
+OR ((@startDate < from_date) AND (@endDate >= to_date)))";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@campId", campId);
+                    cmd.Parameters.AddWithValue("@startDate", startDate);
+                    cmd.Parameters.AddWithValue("@endDate", endDate);
 
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())

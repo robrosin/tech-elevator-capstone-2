@@ -25,17 +25,16 @@ namespace Capstone
             // Create any DAOs needed here, and then pass them into main menu...
 
 
-            //MainMenu mainMenu = new MainMenu();  // You'll probably be adding daos to the constructor
+            MainMenu mainMenu = new MainMenu();  // You'll probably be adding daos to the constructor
 
-            //// Run the menu.
-            //mainMenu.Run();
+            // Run the menu.
+            mainMenu.Run();
 
-            OurMenu menu = new OurMenu();
+            //OurMenu menu = new OurMenu();
 
-            menu.GetParkList();
-            menu.GetCampList();
-            menu.GetSiteList();
-            menu.DisplayMainMenu();
+            //menu.GetParkList();
+            
+            //menu.DisplayMainMenu();
 
             // make interfaces for all DAO files
             // write a query that identifies all of the conflicting reservation dates
