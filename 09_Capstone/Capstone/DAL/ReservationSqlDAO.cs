@@ -9,6 +9,7 @@ namespace Capstone.DAL
     public class ReservationSqlDAO : IReservationDAO
     {
         private const string CONNECTION_STRING = "Server=.\\SQLExpress;Database=npcampground;Trusted_Connection=True;";
+        public int NewId { get; set; }
 
         public IList<Reservation> GetAllReservations()
         {
@@ -69,9 +70,7 @@ SELECT @@IDENTITY";
                     cmd.Parameters.AddWithValue("@fromDate", fromDate);
                     cmd.Parameters.AddWithValue("@toDate", toDate);
 
-                    int newId = Convert.ToInt32(cmd.ExecuteScalar()); // TODO 01: Find way to get newId into CreateReservation method under CampSearchMenu
-
-                    cmd.ExecuteNonQuery();
+                    NewId = Convert.ToInt32(cmd.ExecuteScalar()); // TODO 01: Find way to get newId into CreateReservation method under CampSearchMenu
 
                 }
                 return reserves;

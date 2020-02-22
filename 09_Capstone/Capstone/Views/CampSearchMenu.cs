@@ -13,10 +13,12 @@ namespace Capstone.Views
         CampgroundSqlDAO campObj = new CampgroundSqlDAO();
         SiteSqlDAO siteObj = new SiteSqlDAO();
         ReservationSqlDAO reserveObj = new ReservationSqlDAO();
-
+        
+        
         Park park;
         Campground chosenCamp;
 
+        int reserveId;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
@@ -39,6 +41,11 @@ namespace Capstone.Views
             }
             this.menuOptions.Add("0", "Return to Previous Screen");
             this.quitKey = "0";
+        }
+
+        public void GetReservationId()
+        {
+            reserveId = reserveObj.NewId;
         }
 
         /// <summary>
@@ -72,7 +79,6 @@ namespace Capstone.Views
                 return;
             }
             CreateReservation(siteList, startDate, endDate);
-            Console.ReadLine();
         }
 
         public void CreateReservation(IList<Site> siteList, DateTime startDate, DateTime endDate)
@@ -80,25 +86,40 @@ namespace Capstone.Views
             DateTime fromDate = startDate;
             DateTime toDate = endDate;
             int numOfDays = (endDate - startDate).Days;
-            // create a list of ints that will contain the siteId's captured in the foreach loop below
+            List<int> chosenSites = new List<int>(); // create a list of ints that will contain the siteId's captured in the foreach loop below
 
             Console.WriteLine($"{"Site No.",-10} {"Max Occup.",-12} {"Accessible",-12} {"Max RV Length",-15} {"Utility",-10} {"Cost",-10}");
 
             foreach (Site site in siteList)
             {
                 Console.WriteLine($"{site.SiteId,-10} {site.MaxOccupancy,-12} {site.Accessible,-12} {site.MaxRVLength,-15} {site.Utilities,-10} {numOfDays * chosenCamp.DailyFee,-10:C}");
+                chosenSites.Add(site.SiteId);
             }
 
             Console.WriteLine("Which site would you like to reserve? (0 to cancel) ");
-            string siteId = Console.ReadLine(); // TODO 02: make sure only a valid SiteId can be selected (try/catch?)
-            // if the number entered is contained within the siteId list, then continue on with the reservation, otherwise throw WriteError, pause with messsage, return
-            // else continue
+            string siteIdStr = Console.ReadLine(); // TODO 02: make sure only a valid SiteId can be selected (try/catch?)
 
-            Console.WriteLine("What name should the reservation be made under? ");
-            string reserveName = Console.ReadLine();
-
-
-            //reserveObj.SaveReservation(siteId, reserveName, startDate, endDate);
+            try
+            {
+                int siteId = Convert.ToInt32(siteIdStr);
+                if (chosenSites.Contains(siteId))
+                {
+                    Console.WriteLine("What name should the reservation be made under? ");
+                    string reserveName = Console.ReadLine();
+                    reserveObj.SaveReservation(siteId, reserveName, startDate, endDate);
+                    GetReservationId();
+                    Console.WriteLine($"Your reservation has been created. Your reservation ID is {reserveId}");
+                    Console.WriteLine("Hit enter to continue");
+                    Console.ReadLine();
+                    return;
+                }
+            }
+            catch (System.FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                WriteError("Please input a valid site number");
+                return;
+            }
 
         }
 
