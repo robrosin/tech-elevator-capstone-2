@@ -30,14 +30,6 @@ namespace Capstone
             // Run the menu.
             mainMenu.Run();
 
-            //OurMenu menu = new OurMenu();
-
-            //menu.GetParkList();
-            
-            //menu.DisplayMainMenu();
-
-            // make interfaces for all DAO files
-            // write a query that identifies all of the conflicting reservation dates
 
             
         }

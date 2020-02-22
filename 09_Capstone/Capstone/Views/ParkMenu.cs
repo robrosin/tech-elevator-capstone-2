@@ -73,7 +73,6 @@ namespace Capstone.Views
         {
             base.AfterDisplayMenu();
             SetColor(ConsoleColor.Cyan);
-            Console.WriteLine("Display some data here, AFTER the sub-menu is shown....");
             ResetColor();
         }
 

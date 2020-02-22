@@ -74,8 +74,7 @@ namespace Capstone.Views
             IList<Site> siteList = siteObj.GetSites(chosenCamp.CampgroundId, startDate, endDate);
             if (siteList.Count == 0)
             {
-                WriteError("There are no available sites");
-                Pause("Change Your Mind");
+                Pause("There are no available sites");
                 return;
             }
             CreateReservation(siteList, startDate, endDate);
@@ -127,7 +126,7 @@ namespace Capstone.Views
         protected override void BeforeDisplayMenu()
         {
             PrintHeader();
-            Console.WriteLine($" {"",-5} {"Name",-40} {"Open",-10} {"Close",-10} {"DailyFee",-10}");
+            Console.WriteLine($"{"Name",-43} {"Open",-10} {"Close",-10} {"DailyFee",-10}");
 
         }
 
